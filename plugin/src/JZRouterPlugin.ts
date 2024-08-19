@@ -4,8 +4,6 @@ import { JZRouterCompileOptions } from './types';
 import * as path from 'path';
 import { EtsAnalyzer } from './EtsAnalyzer';
 
-// const APP_JSON_PATH = '/AppScope/app.json5';
-
 const PLUGIN_ID = 'hvigor-jz-router-plugin'
 const ROUTER_ANNOTATION_NAME = 'Entry';
 const ROUTER_BUILDER_PATH = "src/main/ets/generated";
@@ -38,7 +36,8 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
       let analyzer = new EtsAnalyzer(options, filePath);
       analyzer.start();
       if (analyzer.routerAnnotationExisted) {
-        log("解析路由: " + analyzer.analyzeResult.name);
+        let fileName = path.basename(filePath);
+        log(`解析路由[${options.moduleName}-${fileName}]: ${analyzer.analyzeResult.name}`);
       }
     })
   }
