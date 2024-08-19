@@ -33,33 +33,33 @@ export class EtsAnalyzer {
 
   resolveNode(node: ts.Node): NodeInfo | undefined {
     switch (node.kind) {
-    // import节点（如 import * as path from "path";）
+      // import节点（如 import * as path from "path";）
       case ts.SyntaxKind.ImportDeclaration:
         this.resolveImportDeclaration(node);
         break;
-    // 未知的声明节点
+      // 未知的声明节点
       case ts.SyntaxKind.MissingDeclaration:
         this.resolveMissDeclaration(node);
         break;
-    // 装饰器节点
+      // 装饰器节点
       case ts.SyntaxKind.Decorator:
         this.resolveDecoration(node);
         break;
-    // 函数调用节点
+      // 函数调用节点
       case ts.SyntaxKind.CallExpression:
         this.resolveCallExpression(node);
         break;
-    // 表达式节点
+      // 表达式节点
       case ts.SyntaxKind.ExpressionStatement:
         this.resolveExpression(node);
         break;
-    // 标识符节点
+      // 标识符节点
       case ts.SyntaxKind.Identifier:
         return this.resolveIdentifier(node);
-    // 字符串节点
+      // 字符串节点
       case ts.SyntaxKind.StringLiteral:
         return this.resolveStringLiteral(node);
-    // 对象赋值节点
+      // 对象赋值节点
       case ts.SyntaxKind.PropertyAssignment:
         return this.resolvePropertyAssignment(node);
     }

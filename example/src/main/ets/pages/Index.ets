@@ -1,4 +1,5 @@
 import { router } from '@kit.ArkUI';
+import { indexRegister } from '../generated/RouterBuilder';
 
 const NAME = "aaaaaa"
 
@@ -6,7 +7,7 @@ const NAME = "aaaaaa"
   routeName: NAME
 })
 @Component
-struct Index {
+export struct Index {
   @State message: string = 'Hello World';
 
   build() {
