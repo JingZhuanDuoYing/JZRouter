@@ -37,7 +37,9 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
       log(`filePath: ${filePath}`);
       let analyzer = new EtsAnalyzer(options, filePath);
       analyzer.start();
-      log("analyzer " + JSON.stringify(analyzer.analyzeResult));
+      if (analyzer.routerAnnotationExisted) {
+        log("解析路由: " + analyzer.analyzeResult.name);
+      }
     })
   }
 

@@ -69,7 +69,7 @@ export class EtsAnalyzer {
     const sourceFile = ts.createSourceFile(this.sourcePath, fs.readFileSync(this.sourcePath, 'utf-8'), ts.ScriptTarget.ES2021);
     let constantNode: ts.Node | undefined;
 
-    // 遍历文件找到常量定义
+    // 1. 先在本地定义中查找
     ts.forEachChild(sourceFile, (node) => {
       if (node.kind === ts.SyntaxKind.VariableStatement) {
         const variableStatement = node as ts.VariableStatement;
@@ -80,6 +80,38 @@ export class EtsAnalyzer {
         });
       }
     });
+
+    // 2. 如果本地未找到，再查找import语句，解析外部模块
+    if (!constantNode) {
+      ts.forEachChild(sourceFile, (node) => {
+        if (node.kind === ts.SyntaxKind.ImportDeclaration) {
+          const importDeclaration = node as ts.ImportDeclaration;
+          const moduleName = (importDeclaration.moduleSpecifier as ts.StringLiteral).text;
+
+          // 假设库文件路径为相对路径
+          const modulePath = require.resolve(moduleName, { paths: [this.sourcePath] });
+          const moduleSourceCode = fs.readFileSync(modulePath, 'utf-8');
+          const moduleSourceFile = ts.createSourceFile(modulePath, moduleSourceCode, ts.ScriptTarget.ES2021, false);
+
+          ts.forEachChild(moduleSourceFile, (node) => {
+            if (node.kind === ts.SyntaxKind.VariableStatement) {
+              const variableStatement = node as ts.VariableStatement;
+              variableStatement.declarationList.declarations.forEach(declaration => {
+                if (declaration.name.kind === ts.SyntaxKind.Identifier && (declaration.name as ts.Identifier).text === constantName) {
+                  constantNode = declaration.initializer;
+                }
+              });
+            }
+          });
+
+          // 如果找到常量值，直接返回
+          if (constantNode) {
+            return constantNode;
+          }
+        }
+      });
+    }
+
     return constantNode;
   }
 
