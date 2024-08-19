@@ -26,7 +26,18 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
       log(`nodeName: ${currentNode.getNodeName()}, nodePath: ${currentNode.getNodePath()}}`);
       options.moduleName = currentNode.getNodeName();
       options.modulePath = currentNode.getNodePath();
-      options.scanFiles = getEtsFiles(currentNode.getNodePath() + '/src/main/ets');
+
+
+
+      let files = getEtsFiles(currentNode.getNodePath() + '/src/main/ets');
+      if (options.scanModules) {
+        options.scanModules.forEach(depModule => {
+          const depPath = path.resolve(options.modulePath, 'oh_modules', depModule, 'src/main/ets');
+          getEtsFiles(depPath, files);
+        })
+      }
+
+      options.scanFiles = files;
 
       log(`Exec start`);
       pluginExec(options);
@@ -34,8 +45,8 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
   }
 }
 
-function getEtsFiles(dir: string): string[] {
-  let files: string[] = [];
+function getEtsFiles(dir: string, fileList: string[] | null): string[] {
+  let files: string[] = fileList ?? [];
 
   // 读取dir文件夹下的所有ets后缀的文件
   const walk = (currentPath: string) => {
@@ -60,19 +71,6 @@ function getEtsFiles(dir: string): string[] {
 
 function log(message: string) {
   console.log(`[${PLUGIN_ID}]: ` + message);
-}
-
-function generateRouterFile(currentNode: HvigorNode) {
-  let fileList = getEtsFiles(currentNode.getNodePath() + '/src/main/ets');
-  fileList.forEach((filePath) => {
-    log(`filePath: ${filePath}`);
-    let analyzer = new EtsAnalyzer(options, filePath);
-    analyzer.start();
-    if (analyzer.routerAnnotationExisted) {
-      let fileName = path.basename(filePath);
-      log(`解析路由[${options.moduleName}-${fileName}]: ${analyzer.analyzeResult.name}`);
-    }
-  })
 }
 
 function pluginExec(options: JZRouterCompileOptions) {

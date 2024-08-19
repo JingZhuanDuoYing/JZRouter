@@ -1,0 +1,53 @@
+{
+  "strarray": [
+    {
+      "name": "compiled_route_meta_data",
+      "value": [
+        {
+          "value": "@entryModule:entry"
+        },
+        {
+          "value": "@moduleType:entry=entry"
+        },
+        {
+          "value": "@moduleType:hsp_example_module=shared"
+        },
+        {
+          "value": "@moduleType:hsp_indirect_example_module=shared"
+        },
+        {
+          "value": "@moduleType:route_viewer=har"
+        },
+        {
+          "value": "@moduleType:@easy/router=har"
+        }
+      ]
+    },
+    {
+      "name": "compiled_route_map",
+      "value": [
+        {
+          "value": "{\"moduleName\":\"entry\",\"src\":\"pages/Index\",\"url\":\"@bundle:com.easy.router/entry/ets/pages/Index\",\"named\":false,\"name\":\"Index\",\"routeName\":\"\",\"alias\":[]}"
+        },
+        {
+          "value": "{\"moduleName\":\"entry\",\"src\":\"pages/PageA\",\"url\":\"@bundle:com.easy.router/entry/ets/pages/PageA\",\"named\":true,\"name\":\"PageA\",\"routeName\":\"PageA\",\"alias\":[\"page-a\"]}"
+        },
+        {
+          "value": "{\"moduleName\":\"entry\",\"src\":\"pages/SecurityPage\",\"url\":\"@bundle:com.easy.router/entry/ets/pages/SecurityPage\",\"named\":true,\"name\":\"SecurityPage\",\"routeName\":\"SecurityPage\",\"alias\":[]}"
+        },
+        {
+          "value": "{\"moduleName\":\"hsp_example_module\",\"src\":\"pages/SettingsPage\",\"url\":\"@bundle:com.easy.router/hsp_example_module/ets/pages/SettingsPage\",\"named\":true,\"name\":\"SettingsPage\",\"routeName\":\"SettingsPage\",\"alias\":[\"settingsPage\",\"settings-page\"],\"regex\":\"^settings-([A-Za-z0-9]+)-(?:page|Page)$\"}"
+        },
+        {
+          "value": "{\"moduleName\":\"hsp_example_module\",\"src\":\"pages/AccountPage\",\"url\":\"@bundle:com.easy.router/hsp_example_module/ets/pages/AccountPage\",\"named\":false,\"name\":\"AccountPage\",\"routeName\":\"\",\"alias\":[\"accountPage\",\"account-page\"]}"
+        },
+        {
+          "value": "{\"moduleName\":\"hsp_example_module\",\"src\":\"pages/subFolder/Index\",\"url\":\"@bundle:com.easy.router/hsp_example_module/ets/pages/subFolder/Index\",\"named\":true,\"name\":\"Index\",\"routeName\":\"subFolderPage\",\"alias\":[]}"
+        },
+        {
+          "value": "{\"moduleName\":\"hsp_indirect_example_module\",\"src\":\"pages/IndirectDependencyPage\",\"url\":\"@bundle:com.easy.router/hsp_indirect_example_module/ets/pages/IndirectDependencyPage\",\"named\":false,\"name\":\"IndirectDependencyPage\",\"routeName\":\"\",\"alias\":[]}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,4 @@
 import { router } from '@kit.ArkUI';
-import { indexRegister } from '../generated/RouterBuilder';
 
 const NAME = "aaaaaa"
 

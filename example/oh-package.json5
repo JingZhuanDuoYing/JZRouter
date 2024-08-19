@@ -6,7 +6,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "exampleHar": "file:../exampleHar"
+    "exampleHar": "file:../exampleHar",
+    "@jzdy/router": "file:../router"
   }
 }
 

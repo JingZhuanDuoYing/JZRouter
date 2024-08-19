@@ -18,6 +18,8 @@ export class JZRouterCompileOptions {
   viewKeyword?: string[];
   // 生成代码模板
   builderTpl?: string;
+  // 扫描的外部依赖
+  scanModules?: string[];
 }
 
 

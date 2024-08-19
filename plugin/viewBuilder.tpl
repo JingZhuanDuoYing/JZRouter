@@ -25,8 +25,8 @@ import '{{importPath}}'
 //   {{viewName}}();
 // }
 
-export function {{functionName}}Register(routerInfo: AppRouterInfo) {
+//export function {{functionName}}Register(routerInfo: AppRouterInfo) {
   // DynamicsRouter.registerAppRouterPage(routerInfo, wrapBuilder({{functionName}}Builder));
-}
+//}
 
 {{/each}}
