@@ -1,1 +1,1 @@
-export { JZRouterPlugin } from './src/hvigor-jz-router-plugin'
+export { JZRouterPlugin } from './src/JZRouterPlugin'

@@ -3,5 +3,7 @@ import { JZRouterPlugin }  from "hvigor-jz-router-plugin";
 
 export default {
     system: hapTasks,  /* Built-in plugin of Hvigor. It cannot be modified. */
-    plugins:[JZRouterPlugin()]   /* Custom plugin to extend the functionality of Hvigor. */
+    plugins: [
+      JZRouterPlugin()
+    ]   /* Custom plugin to extend the functionality of Hvigor. */
 }

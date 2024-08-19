@@ -1,6 +1,10 @@
 import { router } from '@kit.ArkUI';
 
-@Entry
+const NAME = "aaaaaa"
+
+@Entry({
+  routeName: NAME
+})
 @Component
 struct Index {
   @State message: string = 'Hello World';
