@@ -1,6 +1,6 @@
 import { router } from '@kit.ArkUI';
 
-const NAME = "aaaaaa"
+const NAME = "myRouteName123456789"
 
 @Entry({
   routeName: NAME

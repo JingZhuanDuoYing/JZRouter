@@ -14,32 +14,29 @@ export class JZRouterCompileOptions {
   annotation?: string;
   // 扫描的文件路径
   scanFiles?: string[];
-  // 查找生成struct的关键字
-  viewKeyword?: string[];
-  // 生成代码模板
-  builderTpl?: string;
   // 扫描的外部依赖
   scanModules?: string[];
   // 扫描的模块配置
-  moduleExecConfig?: ModuleExecConfig[];
+  modulesExecConfig?: ModuleExecConfig[];
 }
 
-class ModuleExecConfig {
+export class ModuleExecConfig {
   // 模块名
   moduleName?: string;
   // 模块路径
   modulePath?: string;
   // 扫描的文件路径
   scanFiles?: string[];
+  // 是否Hap模块
+  isHapModule: boolean = false;
 }
 
 class RouterInfo {
   // 路由名，自定义装饰器中配置的参数值
   name?: string;
   // 模块名
-  pageModule?: string;
+  module?: string;
   // 所在目录
-  importDir?: string;
   value?: string;
 }
 
@@ -51,10 +48,6 @@ interface RouterMap {
 
 interface StrArray {
   strarray: RouterMap[];
-}
-
-interface TemplateModel {
-  viewList: ViewInfo[];
 }
 
 // 用于生成组件注册类

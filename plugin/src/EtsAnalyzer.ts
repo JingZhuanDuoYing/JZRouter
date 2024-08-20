@@ -51,7 +51,7 @@ export class EtsAnalyzer {
         break;
       // 表达式节点
       case ts.SyntaxKind.ExpressionStatement:
-        this.resolveExpression(node);
+        // this.resolveExpression(node);
         break;
       // 标识符节点
       case ts.SyntaxKind.Identifier:
