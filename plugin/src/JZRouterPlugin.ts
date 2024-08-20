@@ -7,14 +7,12 @@ import Handlebars from 'handlebars';
 
 const PLUGIN_ID = 'hvigor-jz-router-plugin'
 const ROUTER_ANNOTATION_NAME = 'Entry';
-const ROUTER_BUILDER_PATH = "src/main/resources/base/element";
 const ROUTER_BUILDER_NAME = "jz_generated_route_map";
-const ROUTER_MAP_PATH = "src/main/resources/base/element";
+const ROUTER_MAP_PATH = "src/main/resources/rawfile";
 
 export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCompileOptions()): HvigorPlugin {
   options.annotation = ROUTER_ANNOTATION_NAME;
   options.routerMapDir = ROUTER_MAP_PATH;
-  options.builderDir = ROUTER_BUILDER_PATH;
   options.builderFileName = ROUTER_BUILDER_NAME;
 
   return {
@@ -84,11 +82,7 @@ function log(message: string) {
 function pluginExec(options: JZRouterCompileOptions) {
   let routeInfos: RouterInfo[] = [];
   let routeMap: RouterMap = {
-    name: "generatedRouteMap",
-    value: routeInfos
-  }
-  let strarray: StrArray = {
-    strarray: [routeMap]
+    generatedRouteMap: routeInfos
   }
   options.modulesExecConfig?.forEach((config) => {
     let moduleName = config.moduleName
@@ -112,9 +106,8 @@ function pluginExec(options: JZRouterCompileOptions) {
     })
   });
 
-
   // 生成自定义路由表文件
-  generateRouterMap(strarray, options);
+  generateRouterMap(routeMap, options);
 }
 
 // 以json的格式生成路由表

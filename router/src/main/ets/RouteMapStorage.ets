@@ -1,10 +1,12 @@
 import { common } from '@kit.AbilityKit';
+import util from '@ohos.util';
+import { JSON } from '@kit.ArkTS';
+import { RouterMap } from "./type";
 
 const JZ_ROUTER_MAP_STORAGE_NAME: string = '__JZ_ROUTER_MAP_STORAGE__'
 
 export class RouteMapStorage {
   private static instance: RouteMapStorage;
-
   context?: common.UIAbilityContext;
 
   private constructor() {
@@ -37,18 +39,22 @@ export class RouteMapStorage {
     if (!vs.context) {
       return
     }
-      try {
-        let metaDataArray = vs.context.resourceManager.getStringArrayByNameSync('compiled_route_meta_data')
-        if (metaDataArray?.length) {
-          for (let item of metaDataArray) {
-            console.log("-------- " + JSON.stringify(item));
-          }
-        }
-      } catch (e) {
-        console.log('router', '%{public}s',
-          `Cannot read [compiled_route_meta_data], cause:${e.message ||
-            '<unknown>'}. Please check if the routing compilation plugin [hvigor-easy-router-plugin] is correctly configured`)
-      }
-  }
+    try {
+      vs.context.resourceManager.getRawFileContent('jz_generated_route_map.json').then((content) => {
+        const decoder = util.TextDecoder.create("utf-8")
+        const jsonString = decoder.decodeWithStream(content)
+        let routerMap = JSON.parse(jsonString) as RouterMap
 
+        routerMap.generatedRouteMap?.forEach((info)=> {
+          console.log("jz_generated_route_map.json, --  ", JSON.stringify(info))
+        })
+      })
+
+    } catch (e) {
+      console.log('router', '%{public}s',
+        `Cannot read [compiled_route_meta_data], cause:${e.message ||
+          '<unknown>'}. Please check if the routing compilation plugin [hvigor-easy-router-plugin] is correctly configured`)
+    }
+  }
 }
+

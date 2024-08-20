@@ -37,7 +37,7 @@ class RouterInfo {
   // 模块名
   module?: string;
   // 所在目录
-  value?: string;
+  importDir?: string;
 }
 
 // 路由表
