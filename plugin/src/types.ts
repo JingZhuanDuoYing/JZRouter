@@ -20,23 +20,37 @@ export class JZRouterCompileOptions {
   builderTpl?: string;
   // 扫描的外部依赖
   scanModules?: string[];
+  // 扫描的模块配置
+  moduleExecConfig?: ModuleExecConfig[];
 }
 
+class ModuleExecConfig {
+  // 模块名
+  moduleName?: string;
+  // 模块路径
+  modulePath?: string;
+  // 扫描的文件路径
+  scanFiles?: string[];
+}
 
 class RouterInfo {
   // 路由名，自定义装饰器中配置的参数值
   name?: string;
   // 模块名
   pageModule?: string;
-  // 加载的页面的路径
-  pageSourceFile?: string;
-  // 注册路由的方法
-  registerFunction?: string;
+  // 所在目录
+  importDir?: string;
+  value?: string;
 }
 
 // 路由表
 interface RouterMap {
-  routerMap: RouterInfo[];
+  name: string;
+  value: RouterInfo[];
+}
+
+interface StrArray {
+  strarray: RouterMap[];
 }
 
 interface TemplateModel {

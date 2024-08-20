@@ -7,9 +7,9 @@ import Handlebars from 'handlebars';
 
 const PLUGIN_ID = 'hvigor-jz-router-plugin'
 const ROUTER_ANNOTATION_NAME = 'Entry';
-const ROUTER_BUILDER_PATH = "src/main/ets/generated";
-const ROUTER_BUILDER_NAME = "RouterBuilder.ets";
-const ROUTER_MAP_PATH = "src/main/resources/rawfile/routerMap";
+const ROUTER_BUILDER_PATH = "src/main/resources/base/element";
+const ROUTER_BUILDER_NAME = "jz_generated_route_map";
+const ROUTER_MAP_PATH = "src/main/resources/base/element";
 const ROUTER_BUILDER_TEMPLATE = "viewBuilder.tpl";
 
 export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCompileOptions()): HvigorPlugin {
@@ -26,7 +26,6 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
       log(`nodeName: ${currentNode.getNodeName()}, nodePath: ${currentNode.getNodePath()}}`);
       options.moduleName = currentNode.getNodeName();
       options.modulePath = currentNode.getNodePath();
-
 
 
       let files = getEtsFiles(currentNode.getNodePath() + '/src/main/ets');
@@ -74,12 +73,14 @@ function log(message: string) {
 }
 
 function pluginExec(options: JZRouterCompileOptions) {
-  const templateModel: TemplateModel = {
-    viewList: []
-  };
-  const routerMap: RouterMap = {
-    routerMap: []
-  };
+  let routeInfos: RouterInfo[] = [];
+  let routeMap: RouterMap = {
+    name: "generatedRouteMap",
+    value: routeInfos
+  }
+  let strarray: StrArray = {
+    strarray: [routeMap]
+  }
   options.scanFiles.forEach((filePath) => {
     log(`filePath: ${filePath}`);
     let analyzer = new EtsAnalyzer(options, filePath);
@@ -87,44 +88,30 @@ function pluginExec(options: JZRouterCompileOptions) {
     if (analyzer.routerAnnotationExisted) {
       let fileName = path.basename(filePath);
 
-      log(`解析路由[${options.moduleName}-${fileName}]: ${analyzer.analyzeResult.name}`);
+      log(`解析路由[${options.moduleName}-${fileName}]: ${JSON.stringify(analyzer.analyzeResult)}`);
 
       // 获取文件相对路径
-      const importPath = path.relative(`${options.modulePath}/${options.builderDir}`, filePath).replaceAll("\\", "/").replaceAll(".ets", "");
+      const importPath = path.relative(`${options.modulePath}/oh_modules`, path.dirname(filePath)).replaceAll("\\", "/");
 
-      templateModel.viewList.push({
-        viewName: analyzer.analyzeResult.viewName,
-        importPath: importPath,
-        functionName: analyzer.analyzeResult.functionName,
-        param:analyzer.analyzeResult.param===undefined?"":analyzer.analyzeResult.param
-      });
-      routerMap.routerMap.push({
+      routeInfos.push({
         name: analyzer.analyzeResult.name,
         pageModule: options.moduleName,
-        pageSourceFile: `${options.builderDir}/${options.builderFileName}`,
-        registerFunction: `${analyzer.analyzeResult.functionName}Register`
+        importDir: importPath,
+        value: importPath
       });
     }
   })
-  // 生成路由方法文件
-  generateBuilder(templateModel, options);
+  // 生成自定义路由表文件
+  generateRouterMap(strarray, options);
 }
 
-
-// 根据模板生成路由方法文件
-function generateBuilder(templateModel: TemplateModel, options: Pluginoptions) {
-  console.log(JSON.stringify(templateModel));
-  const builderPath = path.resolve(__dirname, `../${options.builderTpl}`);
-  const tpl = fs.readFileSync(builderPath, { encoding: "utf8" });
-  const template = Handlebars.compile(tpl);
-  const output = template({
-    viewList: templateModel.viewList
-  });
-
-  const routerBuilderDir = `${options.modulePath}/${options.builderDir}`;
-  if (!fs.existsSync(routerBuilderDir)) {
-    fs.mkdirSync(routerBuilderDir, { recursive: true });
+// 以json的格式生成路由表
+function generateRouterMap(routerMap: StrArray, config: PluginConfig) {
+  const jsonOutput = JSON.stringify(routerMap, null, 2);
+  const routerMapDir = `${config.modulePath}/${config.routerMapDir}`;
+  if (!fs.existsSync(routerMapDir)) {
+    fs.mkdirSync(routerMapDir, { recursive: true });
   }
-  fs.writeFileSync(`${routerBuilderDir}/${options.builderFileName}`, output, { encoding: "utf8" });
-  log(`生成路由方法文件: ${routerBuilderDir}/${options.builderFileName}`);
+  fs.writeFileSync(`${routerMapDir}/${config.builderFileName}.json`, jsonOutput, { encoding: "utf8" });
+  log(`生成路由表文件: ${routerMapDir}/${config.builderFileName}.json`);
 }
