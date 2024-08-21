@@ -12,7 +12,6 @@
     "@ohos/hvigor": "5.2.2"
   },
   "dependencies": {
-    "handlebars": "^4.7.8",
     "typescript": "^5.4.5"
   }
 }

@@ -1,6 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import util from '@ohos.util';
-import { JSON } from '@kit.ArkTS';
+import { HashMap, JSON } from '@kit.ArkTS';
 import { RouterMap } from "./type";
 
 const JZ_ROUTER_MAP_STORAGE_NAME: string = '__JZ_ROUTER_MAP_STORAGE__'
@@ -8,6 +8,7 @@ const JZ_ROUTER_MAP_STORAGE_NAME: string = '__JZ_ROUTER_MAP_STORAGE__'
 export class RouteMapStorage {
   private static instance: RouteMapStorage;
   context?: common.UIAbilityContext;
+  routeMap: HashMap<string, string> = new HashMap<string, string>()
 
   private constructor() {
   }
@@ -43,10 +44,13 @@ export class RouteMapStorage {
       vs.context.resourceManager.getRawFileContent('jz_generated_route_map.json').then((content) => {
         const decoder = util.TextDecoder.create("utf-8")
         const jsonString = decoder.decodeWithStream(content)
-        let routerMap = JSON.parse(jsonString) as RouterMap
+        let jsonObj = JSON.parse(jsonString) as RouterMap
 
-        routerMap.generatedRouteMap?.forEach((info)=> {
+        jsonObj.generatedRouteMap?.forEach((info)=> {
           console.log("jz_generated_route_map.json, --  ", JSON.stringify(info))
+          if (info.name) {
+            this.routeMap.set(info.name, info.importDir)
+          }
         })
       })
 
@@ -55,6 +59,10 @@ export class RouteMapStorage {
         `Cannot read [compiled_route_meta_data], cause:${e.message ||
           '<unknown>'}. Please check if the routing compilation plugin [hvigor-easy-router-plugin] is correctly configured`)
     }
+  }
+
+  getImportDir(routeName: string): string {
+    return RouteMapStorage.getInstance().routeMap.get(routeName);
   }
 }
 

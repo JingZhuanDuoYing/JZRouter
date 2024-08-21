@@ -1,4 +1,6 @@
-import { router } from '@kit.ArkUI';
+import { router } from '@jzdy/router';
+// import { router } from '@kit.ArkUI';
+// import 'exampleHar/src/main/ets/components';
 
 const NAME = "myRouteName123456789"
 
@@ -18,15 +20,18 @@ export struct Index {
 
       Button("跳转子模块页面")
         .onClick(() => {
-          import('exampleHar').then(() => {
-            router.pushNamedRoute({
-              name: "MainPage"
-            }, (err) => {
-              if (err) {
-                console.error("router.pushUrl", err)
-              }
-            })
+          router.pushNamedRoute({
+            name: "MainPage"
           })
+          // import('exampleHar/src/main/ets/components/MainPage').then(() => {
+          //   router.pushNamedRoute({
+          //     name: "MainPage"
+          //   }, (err) => {
+          //     if (err) {
+          //       console.error("router.pushUrl", err)
+          //     }
+          //   })
+          // })
         })
     }
     .height('100%')

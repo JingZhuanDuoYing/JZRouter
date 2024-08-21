@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import { JZRouterCompileOptions, RouterInfo, ModuleExecConfig } from './types';
 import * as path from 'path';
 import { EtsAnalyzer } from './EtsAnalyzer';
-import Handlebars from 'handlebars';
 
 const PLUGIN_ID = 'hvigor-jz-router-plugin'
 const ROUTER_ANNOTATION_NAME = 'Entry';
@@ -23,6 +22,7 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
       
       options.moduleName = currentNode.getNodeName();
       options.modulePath = currentNode.getNodePath();
+
       let entryModule: ModuleExecConfig = {
         moduleName: currentNode.getNodeName(),
         modulePath: currentNode.getNodePath(),
@@ -92,15 +92,15 @@ function pluginExec(options: JZRouterCompileOptions) {
       if (analyzer.routerAnnotationExisted) {
         let fileName = path.basename(filePath);
 
-        log(`解析路由[${moduleName}-${fileName}]: ${JSON.stringify(analyzer.analyzeResult)}`);
-
         // 获取文件相对路径
-        const importPath = path.relative(`${options.modulePath}/oh_modules`, path.dirname(filePath)).replaceAll("\\", "/");
+        const importPath = path.relative(`${options.modulePath}/oh_modules`, filePath).replaceAll("\\", "/").replace(".ets", "");
+
+        log(`[${moduleName}]解析路由: "${analyzer.analyzeResult.name}" - ${importPath}`);
 
         routeInfos.push({
           name: analyzer.analyzeResult.name,
           module: moduleName,
-          value: importPath
+          importDir: importPath
         });
       }
     })
