@@ -1,15 +1,23 @@
 # JZRouter 鸿蒙动态路由插件
 
 ### 安装
+1. 在项目根目录找到```hvigor```子目录，在`hvigor-config.json5`文件```dependencies```节点添加以下配置：
 
-1. 在包含`UIAbility`的`hap`模块模块目录，执行以下命令：
+   ``` json
+     "dependencies": {
+       "hvigor-jz-router-plugin": "1.0.1"
+     }
+   ```
+
+2. 在包含`UIAbility`的`hap`模块模块目录，执行以下命令：
 
     ``` bash
     ohpm install @jzdy/router
     ```
     安装成功后，可在`oh-package.json5`的`dependencies`节中看到`@jzdy/router`包，此时表示安装成功。
 
-2. 在hap模块的```hvigorfile.ts```中配置插件并指定需要生成路由的子模块
+
+3. 在hap模块的```hvigorfile.ts```中配置插件并指定需要生成路由的子模块
 
     ```typescript
     import { JZRouterPlugin }  from "hvigor-jz-router-plugin";
