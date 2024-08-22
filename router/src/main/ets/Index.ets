@@ -144,6 +144,30 @@ export namespace router {
     sysRouter.clear()
   }
 
+  export function getState(): sysRouter.RouterState {
+    return sysRouter.getState()
+  }
+
+  export function getLength(): string {
+    return sysRouter.getLength()
+  }
+
+  export function getStateByIndex(index: number): sysRouter.RouterState | undefined {
+    return sysRouter.getStateByIndex(index)
+  }
+
+  export function getStateByUrl(url: string): Array<sysRouter.RouterState> {
+    return sysRouter.getStateByUrl(url)
+  }
+
+  export function showAlertBeforeBackPage(options: sysRouter.EnableAlertOptions): void {
+    sysRouter.showAlertBeforeBackPage(options);
+  }
+
+  export function hideAlertBeforeBackPage(): void {
+    sysRouter.hideAlertBeforeBackPage();
+  }
+
 }
 
 export default router;

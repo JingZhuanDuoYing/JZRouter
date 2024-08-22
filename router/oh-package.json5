@@ -1,9 +1,9 @@
 {
-  "name": "router",
+  "name": "@jzdy/router",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
   "main": "Index.ets",
-  "author": "",
+  "author": "JZDY",
   "license": "Apache-2.0",
   "dependencies": {}
 }
