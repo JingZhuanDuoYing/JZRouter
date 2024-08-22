@@ -2,6 +2,8 @@
 export class JZRouterCompileOptions {
   // 注册路由的方法的文件名
   builderFileName?: string;
+  importerFileName?: string;
+
   // 注册路由的方法的文件路径
   builderDir?: string;
   // 路由表所在路径
@@ -62,3 +64,6 @@ class ViewInfo {
   param?:string;
 }
 
+interface TemplateModel {
+  viewList: ViewInfo[];
+}

@@ -2,6 +2,8 @@ import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { router } from '@jzdy/router/src/main/ets/Index';
+import { BusinessError } from '@kit.BasicServicesKit';
+import JZRouterImporter from '../generated/JZRouterImporter';
 
 export default class ExampleAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -23,8 +25,7 @@ export default class ExampleAbility extends UIAbility {
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
 
-      router.init(this.context);
-
+      JZRouterImporter.init(this.context)
     });
   }
 

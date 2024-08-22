@@ -1,5 +1,7 @@
 import { router } from '@jzdy/router';
 // import { router } from '@kit.ArkUI';
+
+// import { router } from '@kit.ArkUI';
 // import 'exampleHar/src/main/ets/components';
 
 const NAME = "myRouteName123456789"

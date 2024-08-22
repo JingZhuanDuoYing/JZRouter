@@ -3,16 +3,23 @@ import * as fs from 'fs';
 import { JZRouterCompileOptions, RouterInfo, ModuleExecConfig } from './types';
 import * as path from 'path';
 import { EtsAnalyzer } from './EtsAnalyzer';
+import Handlebars from 'handlebars';
 
 const PLUGIN_ID = 'hvigor-jz-router-plugin'
 const ROUTER_ANNOTATION_NAME = 'Entry';
 const ROUTER_BUILDER_NAME = "jz_generated_route_map";
 const ROUTER_MAP_PATH = "src/main/resources/rawfile";
+const ROUTER_BUILDER_PATH = "src/main/ets/generated";
+const ROUTER_BUILDER_TEMPLATE = "methodBuilder.tpl";
+const ROUTER_IMPORTER_NAME = "JZRouterImporter.ets";
 
 export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCompileOptions()): HvigorPlugin {
   options.annotation = ROUTER_ANNOTATION_NAME;
   options.routerMapDir = ROUTER_MAP_PATH;
+  options.builderDir = ROUTER_BUILDER_PATH;
   options.builderFileName = ROUTER_BUILDER_NAME;
+  options.importerFileName = ROUTER_IMPORTER_NAME;
+  options.builderTpl = ROUTER_BUILDER_TEMPLATE;
 
   return {
     pluginId: PLUGIN_ID,
@@ -84,6 +91,10 @@ function pluginExec(options: JZRouterCompileOptions) {
   let routeMap: RouterMap = {
     generatedRouteMap: routeInfos
   }
+  let viewList: ViewInfo[] = [];
+  let templateModel: TemplateModel = {
+    viewList: viewList
+  }
   options.modulesExecConfig?.forEach((config) => {
     let moduleName = config.moduleName
     config.scanFiles.forEach((filePath) => {
@@ -93,7 +104,7 @@ function pluginExec(options: JZRouterCompileOptions) {
         let fileName = path.basename(filePath);
 
         // 获取文件相对路径
-        const importPath = path.relative(`${options.modulePath}/oh_modules`, filePath).replaceAll("\\", "/").replace(".ets", "");
+        const importPath = path.relative(config.isHapModule ? `${options.modulePath}/src/main` : `${options.modulePath}/oh_modules`, filePath).replaceAll("\\", "/").replace(".ets", "");
 
         log(`[${moduleName}]解析路由: "${analyzer.analyzeResult.name}" - ${importPath}`);
 
@@ -102,12 +113,20 @@ function pluginExec(options: JZRouterCompileOptions) {
           module: moduleName,
           importDir: importPath
         });
+        let funcName = "import_" + analyzer.analyzeResult.name.replaceAll("/", "_");
+        viewList.push({
+          functionName: funcName,
+          importPath: importPath
+        })
       }
     })
   });
 
   // 生成自定义路由表文件
   generateRouterMap(routeMap, options);
+
+  // 生成路由方法文件
+  generateBuilder(templateModel, options);
 }
 
 // 以json的格式生成路由表
@@ -119,4 +138,23 @@ function generateRouterMap(routerMap: StrArray, config: PluginConfig) {
   }
   fs.writeFileSync(`${routerMapDir}/${config.builderFileName}.json`, jsonOutput, { encoding: "utf8" });
   log(`生成路由表文件: ${routerMapDir}/${config.builderFileName}.json`);
+}
+
+
+// 根据模板生成路由方法文件
+function generateBuilder(templateModel: TemplateModel, options: Pluginoptions) {
+  console.log(JSON.stringify(templateModel));
+  const builderPath = path.resolve(__dirname, `../${options.builderTpl}`);
+  const tpl = fs.readFileSync(builderPath, { encoding: "utf8" });
+  const template = Handlebars.compile(tpl);
+  const output = template({
+    viewList: templateModel.viewList
+  });
+
+  const routerBuilderDir = `${options.modulePath}/${options.builderDir}`;
+  if (!fs.existsSync(routerBuilderDir)) {
+    fs.mkdirSync(routerBuilderDir, { recursive: true });
+  }
+  fs.writeFileSync(`${routerBuilderDir}/${options.importerFileName}`, output, { encoding: "utf8" });
+  log(`生成路由方法文件: ${routerBuilderDir}/${options.importerFileName}`);
 }
