@@ -1,13 +1,13 @@
 import { hvigor, HvigorNode, HvigorPlugin } from '@ohos/hvigor';
 import * as fs from 'fs';
-import { JZRouterCompileOptions, RouterInfo, ModuleExecConfig } from './types';
+import { JZRouterCompileOptions, ModuleExecConfig } from './types';
 import * as path from 'path';
 import { EtsAnalyzer } from './EtsAnalyzer';
 import Handlebars from 'handlebars';
 
 const PLUGIN_ID = 'hvigor-jz-router-plugin'
 const ROUTER_ANNOTATION_NAME = 'Entry';
-const ROUTER_BUILDER_NAME = "jz_generated_route_map";
+// const ROUTER_BUILDER_NAME = "jz_generated_route_map";
 const ROUTER_MAP_PATH = "src/main/resources/rawfile";
 const ROUTER_BUILDER_PATH = "src/main/ets/generated";
 const ROUTER_BUILDER_TEMPLATE = "methodBuilder.tpl";
@@ -17,7 +17,6 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
   options.annotation = ROUTER_ANNOTATION_NAME;
   options.routerMapDir = ROUTER_MAP_PATH;
   options.builderDir = ROUTER_BUILDER_PATH;
-  options.builderFileName = ROUTER_BUILDER_NAME;
   options.importerFileName = ROUTER_IMPORTER_NAME;
   options.builderTpl = ROUTER_BUILDER_TEMPLATE;
 
@@ -25,8 +24,6 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
     pluginId: PLUGIN_ID,
     async apply(currentNode: HvigorNode): Promise<void> {
 
-      log(`nodeName: ${currentNode.getNodeName()}, nodePath: ${currentNode.getNodePath()}}`);
-      
       options.moduleName = currentNode.getNodeName();
       options.modulePath = currentNode.getNodePath();
 
@@ -52,7 +49,7 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
         })
       }
 
-      log(`Exec start`);
+      log(`Exec start, module: ${currentNode.getNodeName()}`);
       pluginExec(options);
     }
   }
@@ -87,10 +84,6 @@ function log(message: string) {
 }
 
 function pluginExec(options: JZRouterCompileOptions) {
-  let routeInfos: RouterInfo[] = [];
-  let routeMap: RouterMap = {
-    generatedRouteMap: routeInfos
-  }
   let viewList: ViewInfo[] = [];
   let templateModel: TemplateModel = {
     viewList: viewList
@@ -106,13 +99,8 @@ function pluginExec(options: JZRouterCompileOptions) {
         // 获取文件相对路径
         const importPath = path.relative(config.isHapModule ? `${options.modulePath}/src/main` : `${options.modulePath}/oh_modules`, filePath).replaceAll("\\", "/").replace(".ets", "");
 
-        log(`[${moduleName}]解析路由: "${analyzer.analyzeResult.name}" - ${importPath}`);
+        log(`解析[${moduleName}]路由: "${analyzer.analyzeResult.name}" -> ${importPath}`);
 
-        routeInfos.push({
-          name: analyzer.analyzeResult.name,
-          module: moduleName,
-          importDir: importPath
-        });
         let funcName = "import_" + analyzer.analyzeResult.name.replaceAll("/", "_");
         viewList.push({
           functionName: funcName,
@@ -122,28 +110,12 @@ function pluginExec(options: JZRouterCompileOptions) {
     })
   });
 
-  // 生成自定义路由表文件
-  generateRouterMap(routeMap, options);
-
   // 生成路由方法文件
   generateBuilder(templateModel, options);
 }
 
-// 以json的格式生成路由表
-function generateRouterMap(routerMap: StrArray, config: PluginConfig) {
-  const jsonOutput = JSON.stringify(routerMap, null, 2);
-  const routerMapDir = `${config.modulePath}/${config.routerMapDir}`;
-  if (!fs.existsSync(routerMapDir)) {
-    fs.mkdirSync(routerMapDir, { recursive: true });
-  }
-  fs.writeFileSync(`${routerMapDir}/${config.builderFileName}.json`, jsonOutput, { encoding: "utf8" });
-  log(`生成路由表文件: ${routerMapDir}/${config.builderFileName}.json`);
-}
-
-
 // 根据模板生成路由方法文件
-function generateBuilder(templateModel: TemplateModel, options: Pluginoptions) {
-  console.log(JSON.stringify(templateModel));
+function generateBuilder(templateModel: TemplateModel, options: JZRouterCompileOptions) {
   const builderPath = path.resolve(__dirname, `../${options.builderTpl}`);
   const tpl = fs.readFileSync(builderPath, { encoding: "utf8" });
   const template = Handlebars.compile(tpl);

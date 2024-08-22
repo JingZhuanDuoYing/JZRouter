@@ -10,10 +10,12 @@ class JZRouterImporter {
   }
 }
 
-{{#each viewList}}
-export function {{functionName}}(): Promise<Record<string, Function>> {
-   return import('{{importPath}}')
+export function import_myRouteName123456789(): Promise<Record<string, Function>> {
+   return import('ets/pages/Index')
 }
 
-{{/each}}
+export function import_MainPage(): Promise<Record<string, Function>> {
+   return import('exampleHar/src/main/ets/components/MainPage')
+}
+
 export default JZRouterImporter

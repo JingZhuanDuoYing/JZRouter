@@ -25,7 +25,7 @@ export default class ExampleAbility extends UIAbility {
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
 
-      JZRouterImporter.init(this.context)
+      JZRouterImporter.init()
     });
   }
 

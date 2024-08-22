@@ -1,7 +1,6 @@
 
 export class JZRouterCompileOptions {
   // 注册路由的方法的文件名
-  builderFileName?: string;
   importerFileName?: string;
 
   // 注册路由的方法的文件路径
@@ -33,25 +32,6 @@ export class ModuleExecConfig {
   isHapModule: boolean = false;
 }
 
-class RouterInfo {
-  // 路由名，自定义装饰器中配置的参数值
-  name?: string;
-  // 模块名
-  module?: string;
-  // 所在目录
-  importDir?: string;
-}
-
-// 路由表
-interface RouterMap {
-  name: string;
-  value: RouterInfo[];
-}
-
-interface StrArray {
-  strarray: RouterMap[];
-}
-
 // 用于生成组件注册类
 class ViewInfo {
   // 自定义组件的名字
@@ -60,8 +40,6 @@ class ViewInfo {
   importPath?: string;
   // 组件注册方法名
   functionName?: string;
-  // 方法是否有参数
-  param?:string;
 }
 
 interface TemplateModel {

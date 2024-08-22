@@ -3,7 +3,6 @@
   "buildOption": {
     "arkOptions": {
       "types": [
-        "./src/main/ets/type"
       ]
     }
   },
