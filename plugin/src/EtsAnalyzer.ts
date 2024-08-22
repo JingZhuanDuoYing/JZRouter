@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import ts, { ExpressionStatement, Identifier, PropertyName, StringLiteral } from 'typescript';
 import { JZRouterCompileOptions } from './types';
+import * as path from 'path';
 
 export class EtsAnalyzer {
   // 文件路径
@@ -88,25 +89,33 @@ export class EtsAnalyzer {
           const importDeclaration = node as ts.ImportDeclaration;
           const moduleName = (importDeclaration.moduleSpecifier as ts.StringLiteral).text;
 
-          // 假设库文件路径为相对路径
-          const modulePath = require.resolve(moduleName, { paths: [this.sourcePath] });
-          const moduleSourceCode = fs.readFileSync(modulePath, 'utf-8');
-          const moduleSourceFile = ts.createSourceFile(modulePath, moduleSourceCode, ts.ScriptTarget.ES2021, false);
+          // 手动构建模块路径（假设模块路径是相对路径）
+          let modulePath = moduleName;
+          if (!fs.existsSync(moduleName) && !moduleName.startsWith('/')) {
+            modulePath = path.join(this.pluginConfig.modulePath, "oh_modules", moduleName);
+          }
 
-          ts.forEachChild(moduleSourceFile, (node) => {
-            if (node.kind === ts.SyntaxKind.VariableStatement) {
-              const variableStatement = node as ts.VariableStatement;
-              variableStatement.declarationList.declarations.forEach(declaration => {
-                if (declaration.name.kind === ts.SyntaxKind.Identifier && (declaration.name as ts.Identifier).text === constantName) {
-                  constantNode = declaration.initializer;
-                }
-              });
+          if (fs.existsSync(modulePath)) {
+            const moduleSourceCode = fs.readFileSync(modulePath, 'utf-8');
+            const moduleSourceFile = ts.createSourceFile(modulePath, moduleSourceCode, ts.ScriptTarget.ES2021, false);
+
+            ts.forEachChild(moduleSourceFile, (node) => {
+              if (node.kind === ts.SyntaxKind.VariableStatement) {
+                const variableStatement = node as ts.VariableStatement;
+                variableStatement.declarationList.declarations.forEach(declaration => {
+                  if (declaration.name.kind === ts.SyntaxKind.Identifier && (declaration.name as ts.Identifier).text === constantName) {
+                    constantNode = declaration.initializer;
+                  }
+                });
+              }
+            });
+
+            // 如果找到常量值，直接返回
+            if (constantNode) {
+              return constantNode;
             }
-          });
-
-          // 如果找到常量值，直接返回
-          if (constantNode) {
-            return constantNode;
+          } else {
+            console.error(`Module file not found: ${modulePath}`);
           }
         }
       });
@@ -114,6 +123,7 @@ export class EtsAnalyzer {
 
     return constantNode;
   }
+
 
   // import节点，不做操作
   resolveImportDeclaration(node: ts.Node) {
@@ -145,31 +155,53 @@ export class EtsAnalyzer {
           if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
             const properties = (arg as ts.ObjectLiteralExpression).properties;
             // 遍历装饰器中的所有参数
-            properties.forEach((propertie)=>{
+            properties.forEach((propertie) => {
               if (propertie.kind === ts.SyntaxKind.PropertyAssignment) {
-                // 参数是否是自定义装饰器中的变量名
-                if ((propertie.name as ts.Identifier).escapedText === "routeName") {
-                  // 将装饰器中的变量的值赋值给解析结果中的变量
-                  if (propertie.initializer.kind === ts.SyntaxKind.Identifier) {
-                    const constantValue = this.resolveConstantValue((propertie.initializer as ts.Identifier).text);
-                    if (constantValue && constantValue.kind === ts.SyntaxKind.StringLiteral) {
-                      this.analyzeResult.name = (constantValue as ts.StringLiteral).text;
-                    }
-                  } else if (propertie.initializer.kind === ts.SyntaxKind.StringLiteral) {
-                    this.analyzeResult.name = (propertie.initializer as ts.StringLiteral).text;
+                const nameNode = propertie.name as ts.Identifier;
+                let valueNode = propertie.initializer;
+
+                // 如果是标识符，意味着可能是一个常量
+                if (valueNode.kind === ts.SyntaxKind.Identifier) {
+                  const constValueNode = this.getConstValue(valueNode as ts.Identifier);
+                  if (constValueNode) {
+                    valueNode = constValueNode;
                   }
                 }
-                if ((propertie.name as ts.Identifier).escapedText === "hasParam") {
+
+                // 参数是否是自定义装饰器中的变量名
+                if (nameNode.escapedText === "routeName") {
                   // 将装饰器中的变量的值赋值给解析结果中的变量
-                  this.analyzeResult.param = propertie.initializer.kind === ts.SyntaxKind.TrueKeyword?"param: ESObject":"";
+                  this.analyzeResult.name = (valueNode as ts.StringLiteral).text;
+                }
+                if (nameNode.escapedText === "hasParam") {
+                  // 将装饰器中的变量的值赋值给解析结果中的变量
+                  this.analyzeResult.param = valueNode.kind === ts.SyntaxKind.TrueKeyword ? "param: ESObject" : "";
                 }
               }
-            })
+            });
           }
         }
       }
     }
   }
+
+  // 查找标识符对应的常量值
+  getConstValue(identifier: ts.Identifier): ts.Expression | undefined {
+    let constValue: ts.Expression | undefined;
+    ts.forEachChild(ts.createSourceFile(this.sourcePath, fs.readFileSync(this.sourcePath, 'utf-8'), ts.ScriptTarget.ES2021, false), (node) => {
+      if (node.kind === ts.SyntaxKind.VariableStatement) {
+        const variableStatement = node as ts.VariableStatement;
+        const declarations = variableStatement.declarationList.declarations;
+        declarations.forEach(declaration => {
+          if (declaration.name.getText() === identifier.getText()) {
+            constValue = declaration.initializer;
+          }
+        });
+      }
+    });
+    return constValue;
+  }
+
 
   // 解析函数调用
   resolveCallExpression(node: ts.Node) {

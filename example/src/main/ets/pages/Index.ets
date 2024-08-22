@@ -1,13 +1,12 @@
+import { ROUTER_NAME_TEST } from 'exampleHar';
 import { router } from '@jzdy/router';
 // import { router } from '@kit.ArkUI';
 
 // import { router } from '@kit.ArkUI';
 // import 'exampleHar/src/main/ets/components';
 
-const NAME = "myRouteName123456789"
-
 @Entry({
-  routeName: NAME
+  routeName: ROUTER_NAME_TEST
 })
 @Component
 export struct Index {

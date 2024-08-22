@@ -10,7 +10,7 @@ class JZRouterImporter {
   }
 }
 
-export function import_myRouteName123456789(): Promise<Record<string, Function>> {
+export function import_ROUTER_NAME_TEST(): Promise<Record<string, Function>> {
    return import('ets/pages/Index')
 }
 
