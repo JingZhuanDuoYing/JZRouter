@@ -1,7 +1,7 @@
 {
   "name": "@jzdy/router",
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "鸿蒙动态路由插件.",
   "main": "Index.ets",
   "author": "JZDY",
   "license": "Apache-2.0",
