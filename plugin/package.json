@@ -1,6 +1,6 @@
 {
   "name": "hvigor-jz-router-plugin",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,8 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@ohos/hvigor": "5.2.2"
+    "@ohos/hvigor": "5.2.2",
+    "@types/node": "^22.5.0"
   },
   "dependencies": {
     "handlebars": "^4.7.8",

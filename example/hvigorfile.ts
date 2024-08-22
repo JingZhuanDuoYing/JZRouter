@@ -5,7 +5,7 @@ export default {
     system: hapTasks,  /* Built-in plugin of Hvigor. It cannot be modified. */
     plugins: [
       JZRouterPlugin({scanModules: [
-        "exampleHar"
+        "@jzdy/exampleHar"
       ]})
     ]
 }

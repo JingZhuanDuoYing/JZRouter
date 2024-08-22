@@ -5,7 +5,7 @@
 
    ``` json
      "dependencies": {
-       "hvigor-jz-router-plugin": "1.0.1"
+       "hvigor-jz-router-plugin": "1.0.3"
      }
    ```
 

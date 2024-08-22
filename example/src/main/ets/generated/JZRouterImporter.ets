@@ -15,7 +15,7 @@ export function import_ROUTER_NAME_TEST(): Promise<Record<string, Function>> {
 }
 
 export function import_MainPage(): Promise<Record<string, Function>> {
-   return import('exampleHar/src/main/ets/components/MainPage')
+   return import('@jzdy/exampleHar/src/main/ets/components/MainPage')
 }
 
 export default JZRouterImporter

@@ -38,7 +38,12 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
 
       if (options.scanModules) {
         options.scanModules.forEach(depModuleName => {
-          const depPath = path.resolve(options.modulePath, 'oh_modules', depModuleName, 'src/main/ets');
+          let depModulePath = path.resolve(options.modulePath, 'oh_modules', depModuleName);
+          if (!fs.existsSync(depModulePath)) {
+            log(`！！！[${depModuleName}]不存在，请检查 scanModules 配置`)
+            return;
+          }
+          let depPath = path.resolve(depModulePath, 'src/main/ets');
           let files = getEtsFiles(depPath);
           let depModule: ModuleExecConfig = {
             moduleName: depModuleName,

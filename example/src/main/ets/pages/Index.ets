@@ -1,4 +1,4 @@
-import { ROUTER_NAME_TEST } from 'exampleHar';
+import { ROUTER_NAME_TEST } from '@jzdy/exampleHar';
 import { router } from '@jzdy/router';
 // import { router } from '@kit.ArkUI';
 
