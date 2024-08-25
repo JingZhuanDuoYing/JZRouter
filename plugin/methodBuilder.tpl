@@ -1,19 +1,30 @@
 // auto-generated
-
+{{#each importList}}
+import { {{importClause}} } from "{{importFrom}}";
+{{/each}}
 import { router } from '@jzdy/router';
 
 class JZRouterImporter {
   static init(): void {
-    import("ets/generated/JZRouterImporter").then((m: Record<string, Function>) => {
+    import("ets/generated/JZRouterImporter").then((m: ESObject) => {
       router.init(m)
     })
   }
 }
 
-{{#each viewList}}
-export function {{functionName}}(): Promise<Record<string, Function>> {
-   return import('{{importPath}}')
+export function getGeneratedJZRouterImport(name: string): Promise<Record<string, Function>> {
+  switch (name) {
+    {{#each viewList}}
+    {{#if isNameExpression}}
+    case {{functionName}}:
+    {{else}}
+    case "{{functionName}}":
+    {{/if}}
+      return import('{{importPath}}');
+    {{/each}}
+    default:
+      return Promise.reject(`${name} not found`);
+  }
 }
 
-{{/each}}
 export default JZRouterImporter

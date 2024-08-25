@@ -1,12 +1,8 @@
-import { ROUTER_NAME_TEST } from '@jzdy/exampleHar';
 import { router } from '@jzdy/router';
-// import { router } from '@kit.ArkUI';
-
-// import { router } from '@kit.ArkUI';
-// import 'exampleHar/src/main/ets/components';
+import { exampleRouterName } from '@jzdy/exampleHar';
 
 @Entry({
-  routeName: ROUTER_NAME_TEST
+  routeName: exampleRouterName.ROUTER_NAME_TEST
 })
 @Component
 export struct Index {

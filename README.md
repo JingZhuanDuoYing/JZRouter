@@ -3,11 +3,11 @@
 ### 安装
 1. 在项目根目录找到```hvigor```子目录，在`hvigor-config.json5`文件```dependencies```节点添加以下配置：
 
-   ``` json
-     "dependencies": {
-       "hvigor-jz-router-plugin": "1.0.3"
-     }
-   ```
+    ``` json
+    "dependencies": {
+        "hvigor-jz-router-plugin": "1.0.3"
+    }
+    ```
 
 2. 在包含`UIAbility`的`hap`模块模块目录，执行以下命令：
 
