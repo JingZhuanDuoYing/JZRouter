@@ -1,1 +1,3 @@
-export { router } from './src/main/ets/Index'
+import { router } from './src/main/ets/Index'
+
+export default router;

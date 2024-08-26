@@ -2,7 +2,7 @@
 {{#each importList}}
 import { {{importClause}} } from "{{importFrom}}";
 {{/each}}
-import { router } from '@jzdy/router';
+import router from '@jzdy/router';
 
 class JZRouterImporter {
   static init(): void {

@@ -1,4 +1,4 @@
-import { router } from '@jzdy/router';
+import router from '@jzdy/router';
 import { exampleRouterName } from '@jzdy/exampleHar';
 
 @Entry({

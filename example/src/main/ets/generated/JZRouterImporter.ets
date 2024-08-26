@@ -1,6 +1,6 @@
 // auto-generated
 import { exampleRouterName } from "@jzdy/exampleHar";
-import { router } from '@jzdy/router';
+import router from '@jzdy/router';
 
 class JZRouterImporter {
   static init(): void {
