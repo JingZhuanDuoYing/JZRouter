@@ -5,7 +5,7 @@
 
     ``` json
     "dependencies": {
-        "hvigor-jz-router-plugin": "1.0.3"
+        "hvigor-jz-router-plugin": "1.1.2"
     }
     ```
 
@@ -14,7 +14,7 @@
     ``` bash
     ohpm install @jzdy/router
     ```
-    安装成功后，可在`oh-package.json5`的`dependencies`节中看到`@jzdy/router`包，此时表示安装成功。
+   安装成功后，可在`oh-package.json5`的`dependencies`节中看到`@jzdy/router`包，此时表示安装成功。
 
 3. 在hap模块的```hvigorfile.ts```中配置插件并指定需要生成路由的子模块
 
