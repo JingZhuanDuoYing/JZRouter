@@ -16,12 +16,12 @@ export namespace router {
     })
   }
 
-  export function pushNamedRoute(options: sysRouter.NamedRouterOptions): void;
-  export function pushNamedRoute(options: sysRouter.NamedRouterOptions, mode: sysRouter.RouterMode): Promise<void>;
-  export function pushNamedRoute(options: sysRouter.NamedRouterOptions, callback?: AsyncCallback<void>): Promise<void>;
-  export function pushNamedRoute(options: sysRouter.NamedRouterOptions, mode: sysRouter.RouterMode, callback?: AsyncCallback<void>): Promise<void>;
+  export function pushNamedRoute(options: NamedRouterOptions): void;
+  export function pushNamedRoute(options: NamedRouterOptions, mode: RouterMode): Promise<void>;
+  export function pushNamedRoute(options: NamedRouterOptions, callback?: AsyncCallback<void>): Promise<void>;
+  export function pushNamedRoute(options: NamedRouterOptions, mode: RouterMode, callback?: AsyncCallback<void>): Promise<void>;
   export function pushNamedRoute(
-    options: sysRouter.NamedRouterOptions, callbackOrMode?: AsyncCallback<void> | sysRouter.RouterMode, callback?: AsyncCallback<void>
+    options: NamedRouterOptions, callbackOrMode?: AsyncCallback<void> | RouterMode, callback?: AsyncCallback<void>
   ): void | Promise<void> {
     return ensureImportRoute(options.name).catch(callback)
       .finally(() => {
@@ -30,9 +30,9 @@ export namespace router {
         } else {
           if (callbackOrMode) {
             if (callback) {
-              return sysRouter.pushNamedRoute(options, callbackOrMode as sysRouter.RouterMode, callback);
+              return sysRouter.pushNamedRoute(options, callbackOrMode as RouterMode, callback);
             } else {
-              return sysRouter.pushNamedRoute(options, callbackOrMode as sysRouter.RouterMode);
+              return sysRouter.pushNamedRoute(options, callbackOrMode as RouterMode);
             }
           } else if (callback) {
             return sysRouter.pushNamedRoute(options, callback);
@@ -43,12 +43,12 @@ export namespace router {
       })
   }
 
-  export function replaceNamedRoute(options: sysRouter.NamedRouterOptions): void;
-  export function replaceNamedRoute(options: sysRouter.NamedRouterOptions, mode: sysRouter.RouterMode): Promise<void>;
-  export function replaceNamedRoute(options: sysRouter.NamedRouterOptions, callback?: AsyncCallback<void>): Promise<void>;
-  export function replaceNamedRoute(options: sysRouter.NamedRouterOptions, mode: sysRouter.RouterMode, callback?: AsyncCallback<void>): Promise<void>;
+  export function replaceNamedRoute(options: NamedRouterOptions): void;
+  export function replaceNamedRoute(options: NamedRouterOptions, mode: RouterMode): Promise<void>;
+  export function replaceNamedRoute(options: NamedRouterOptions, callback?: AsyncCallback<void>): Promise<void>;
+  export function replaceNamedRoute(options: NamedRouterOptions, mode: RouterMode, callback?: AsyncCallback<void>): Promise<void>;
   export function replaceNamedRoute(
-    options: sysRouter.NamedRouterOptions, callbackOrMode?: AsyncCallback<void> | sysRouter.RouterMode, callback?: AsyncCallback<void>
+    options: NamedRouterOptions, callbackOrMode?: AsyncCallback<void> | RouterMode, callback?: AsyncCallback<void>
   ): void | Promise<void> {
     return ensureImportRoute(options.name).catch(callback)
       .finally(() => {
@@ -57,9 +57,9 @@ export namespace router {
         } else {
           if (callbackOrMode) {
             if (callback) {
-              return sysRouter.replaceNamedRoute(options, callbackOrMode as sysRouter.RouterMode, callback);
+              return sysRouter.replaceNamedRoute(options, callbackOrMode as RouterMode, callback);
             } else {
-              return sysRouter.replaceNamedRoute(options, callbackOrMode as sysRouter.RouterMode);
+              return sysRouter.replaceNamedRoute(options, callbackOrMode as RouterMode);
             }
           } else if (callback) {
             return sysRouter.replaceNamedRoute(options, callback);
@@ -70,21 +70,21 @@ export namespace router {
       })
   }
 
-  export function pushUrl(options: sysRouter.RouterOptions): void;
-  export function pushUrl(options: sysRouter.RouterOptions, mode: sysRouter.RouterMode): Promise<void>;
-  export function pushUrl(options: sysRouter.RouterOptions, callback?: AsyncCallback<void>): Promise<void>;
-  export function pushUrl(options: sysRouter.RouterOptions, mode: sysRouter.RouterMode, callback?: AsyncCallback<void>): Promise<void>;
+  export function pushUrl(options: RouterOptions): void;
+  export function pushUrl(options: RouterOptions, mode: RouterMode): Promise<void>;
+  export function pushUrl(options: RouterOptions, callback?: AsyncCallback<void>): Promise<void>;
+  export function pushUrl(options: RouterOptions, mode: RouterMode, callback?: AsyncCallback<void>): Promise<void>;
   export function pushUrl(
-    options: sysRouter.RouterOptions, callbackOrMode?: AsyncCallback<void> | sysRouter.RouterMode, callback?: AsyncCallback<void>
+    options: RouterOptions, callbackOrMode?: AsyncCallback<void> | RouterMode, callback?: AsyncCallback<void>
   ): void | Promise<void> {
     if (callbackOrMode && callbackOrMode instanceof Function) {
       return sysRouter.pushUrl(options, callbackOrMode);
     } else {
       if (callbackOrMode) {
         if (callback) {
-          return sysRouter.pushUrl(options, callbackOrMode as sysRouter.RouterMode, callback);
+          return sysRouter.pushUrl(options, callbackOrMode as RouterMode, callback);
         } else {
-          return sysRouter.pushUrl(options, callbackOrMode as sysRouter.RouterMode);
+          return sysRouter.pushUrl(options, callbackOrMode as RouterMode);
         }
       } else {
         if (callback) {
@@ -96,21 +96,21 @@ export namespace router {
     }
   }
 
-  export function replaceUrl(options: sysRouter.RouterOptions): void;
-  export function replaceUrl(options: sysRouter.RouterOptions, mode: sysRouter.RouterMode): Promise<void>;
-  export function replaceUrl(options: sysRouter.RouterOptions, callback?: AsyncCallback<void>): Promise<void>;
-  export function replaceUrl(options: sysRouter.RouterOptions, mode: sysRouter.RouterMode, callback?: AsyncCallback<void>): Promise<void>;
+  export function replaceUrl(options: RouterOptions): void;
+  export function replaceUrl(options: RouterOptions, mode: RouterMode): Promise<void>;
+  export function replaceUrl(options: RouterOptions, callback?: AsyncCallback<void>): Promise<void>;
+  export function replaceUrl(options: RouterOptions, mode: RouterMode, callback?: AsyncCallback<void>): Promise<void>;
   export function replaceUrl(
-    options: sysRouter.RouterOptions, callbackOrMode?: AsyncCallback<void> | sysRouter.RouterMode, callback?: AsyncCallback<void>
+    options: RouterOptions, callbackOrMode?: AsyncCallback<void> | RouterMode, callback?: AsyncCallback<void>
   ): void | Promise<void> {
     if (callbackOrMode && callbackOrMode instanceof Function) {
       return sysRouter.replaceUrl(options, callbackOrMode);
     } else {
       if (callbackOrMode) {
         if (callback) {
-          return sysRouter.replaceUrl(options, callbackOrMode as sysRouter.RouterMode, callback);
+          return sysRouter.replaceUrl(options, callbackOrMode as RouterMode, callback);
         } else {
-          return sysRouter.replaceUrl(options, callbackOrMode as sysRouter.RouterMode);
+          return sysRouter.replaceUrl(options, callbackOrMode as RouterMode);
         }
       } else {
         if (callback) {
@@ -152,15 +152,15 @@ export namespace router {
     return sysRouter.getLength()
   }
 
-  export function getStateByIndex(index: number): sysRouter.RouterState | undefined {
+  export function getStateByIndex(index: number): RouterState | undefined {
     return sysRouter.getStateByIndex(index)
   }
 
-  export function getStateByUrl(url: string): Array<sysRouter.RouterState> {
+  export function getStateByUrl(url: string): Array<RouterState> {
     return sysRouter.getStateByUrl(url)
   }
 
-  export function showAlertBeforeBackPage(options: sysRouter.EnableAlertOptions): void {
+  export function showAlertBeforeBackPage(options: EnableAlertOptions): void {
     sysRouter.showAlertBeforeBackPage(options);
   }
 
@@ -168,6 +168,9 @@ export namespace router {
     sysRouter.hideAlertBeforeBackPage();
   }
 
+  export declare type NamedRouterOptions = sysRouter.NamedRouterOptions;
+  export declare type RouterOptions = sysRouter.RouterOptions;
+  export declare type RouterMode = sysRouter.RouterMode;
+  export declare type RouterState = sysRouter.RouterState;
+  export declare type EnableAlertOptions = sysRouter.EnableAlertOptions;
 }
-
-export default router;
