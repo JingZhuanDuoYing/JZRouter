@@ -1,6 +1,7 @@
 import {StructDeclaration} from "ohos-typescript";
-import {AnalyzeResult, JZRouterCompileOptions} from "./types";
+import {AnalyzeResult, JZRouterCompileOptions, ModuleExecConfig} from "./types";
 import * as fs from "fs";
+import * as path from "path";
 import ts from "ohos-typescript";
 
 export class StructDeclarationAnalyzer {
@@ -9,6 +10,8 @@ export class StructDeclarationAnalyzer {
     sourcePath: string;
     // hvigor配置
     pluginConfig: JZRouterCompileOptions;
+    // 模块配置
+    moduleExecConfig: ModuleExecConfig;
     // 解析结果
     analyzeResult: AnalyzeResult = new AnalyzeResult();
     // 是否存在装饰器
@@ -16,9 +19,10 @@ export class StructDeclarationAnalyzer {
 
     allImportDeclaration: ts.ImportDeclaration[] = [];
 
-    constructor(pluginConfig: JZRouterCompileOptions, sourcePath: string) {
+    constructor(pluginConfig: JZRouterCompileOptions, moduleConfig: ModuleExecConfig, sourcePath: string) {
         this.pluginConfig = pluginConfig;
         this.sourcePath = sourcePath;
+        this.moduleExecConfig = moduleConfig;
     }
 
     public start() {
@@ -68,9 +72,10 @@ export class StructDeclarationAnalyzer {
                                                 const moduleSpecifier = importDeclaration.moduleSpecifier;
                                                 importClause?.namedBindings?.elements?.forEach((element) => {
                                                     if (element.name.escapedText === spaceName) {
+                                                        const importFrom = this.parseImportFrom(moduleSpecifier.text);
                                                         this.analyzeResult.importExp = {
                                                             importClause: spaceName,
-                                                            importFrom: moduleSpecifier.text
+                                                            importFrom: importFrom
                                                         };
                                                     }
                                                 });
@@ -97,5 +102,13 @@ export class StructDeclarationAnalyzer {
         } else if (node.kind === ts.SyntaxKind.ImportDeclaration) {
             this.allImportDeclaration.push(node as ts.ImportDeclaration);
         }
+    }
+
+    private parseImportFrom(text: string) {
+        // 如果是相对路径，则引入当前扫描的模块名
+        if (text.startsWith(".")) {
+            return this.moduleExecConfig.moduleName;
+        }
+        return text;
     }
 }

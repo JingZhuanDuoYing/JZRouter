@@ -101,7 +101,7 @@ function pluginExec(options: JZRouterCompileOptions) {
     options.modulesExecConfig?.forEach((config) => {
         let moduleName = config.moduleName
         config.scanFiles?.forEach((filePath) => {
-            let analyzer = new StructDeclarationAnalyzer(options, filePath);
+            let analyzer = new StructDeclarationAnalyzer(options, config, filePath);
 
             analyzer.start();
             if (analyzer.routerAnnotationExisted) {
@@ -127,7 +127,16 @@ function pluginExec(options: JZRouterCompileOptions) {
                         isNameExpression: analyzer.analyzeResult.isNameExpression
                     })
                     if (analyzer.analyzeResult.importExp) {
-                        importList.add(analyzer.analyzeResult.importExp);
+                        // 判断是否存在
+                        let existed = false;
+                        importList.forEach((importExp) => {
+                            if (importExp.importClause === analyzer.analyzeResult.importExp?.importClause) {
+                                existed = true;
+                            }
+                        });
+                        if (!existed) {
+                            importList.add(analyzer.analyzeResult.importExp);
+                        }
                     }
                 }
             }
