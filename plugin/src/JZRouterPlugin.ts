@@ -39,14 +39,14 @@ export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCom
 
             if (options.scanModules) {
                 options.scanModules.forEach(depModuleName => {
-                    let depModulePath = path.resolve(options.modulePath, 'oh_modules', depModuleName);
+                    const depModulePath = path.resolve(options.modulePath, 'oh_modules', depModuleName);
                     if (!fs.existsSync(depModulePath)) {
                         log(`！！！[${depModuleName}]不存在，请检查 scanModules 配置`)
                         return;
                     }
-                    let depPath = path.resolve(depModulePath, 'src/main/ets');
-                    let files = getEtsFiles(depPath);
-                    let depModule: ModuleExecConfig = {
+                    const depPath = path.resolve(depModulePath, 'src/main/ets');
+                    const files = getEtsFiles(depPath);
+                    const depModule: ModuleExecConfig = {
                         moduleName: depModuleName,
                         modulePath: depPath,
                         scanFiles: files,
@@ -99,9 +99,9 @@ function pluginExec(options: JZRouterCompileOptions) {
         constValueList: constValueList
     }
     options.modulesExecConfig?.forEach((config) => {
-        let moduleName = config.moduleName
+        const moduleName = config.moduleName
         config.scanFiles?.forEach((filePath) => {
-            let analyzer = new StructDeclarationAnalyzer(options, config, filePath);
+            const analyzer = new StructDeclarationAnalyzer(options, config, filePath);
 
             analyzer.start();
             if (analyzer.routerAnnotationExisted) {
@@ -127,7 +127,7 @@ function pluginExec(options: JZRouterCompileOptions) {
                         isNameExpression: analyzer.analyzeResult.isNameExpression
                     })
                     if (analyzer.analyzeResult.importExp) {
-                        // 判断是否存在
+                        // 判断是否已存在
                         let existed = false;
                         importList.forEach((importExp) => {
                             if (importExp.importClause === analyzer.analyzeResult.importExp?.importClause) {

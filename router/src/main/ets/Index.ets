@@ -11,7 +11,7 @@ export namespace router {
 
   function ensureImportRoute(routeName: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      let funcName = routeName.replaceAll("/", "_");
+      const funcName = routeName.replaceAll("/", "_");
       importer.getGeneratedJZRouterImport(funcName).then(resolve).catch(reject)
     })
   }
@@ -144,7 +144,7 @@ export namespace router {
     sysRouter.clear()
   }
 
-  export function getState(): sysRouter.RouterState {
+  export function getState(): RouterState {
     return sysRouter.getState()
   }
 
