@@ -5,5 +5,7 @@
   "main": "Index.ets",
   "author": "JZDY",
   "license": "Apache-2.0",
+  "repository": "https://github.com/JingZhuanDuoYing/JZRouter",
+  "keywords": ["路由", "Router", "页面路由", "动态import"],
   "dependencies": {}
 }
