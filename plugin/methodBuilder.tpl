@@ -6,7 +6,7 @@ import router from '@jzdy/router';
 
 class JZRouterImporter {
   static init(): void {
-    import("ets/generated/JZRouterImporter").then((m: ESObject) => {
+    import("ets/generated/JZRouterImporter").then((m: Record<string, Function>) => {
       router.init(m)
     })
   }
