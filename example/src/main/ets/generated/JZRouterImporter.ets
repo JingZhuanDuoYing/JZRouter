@@ -1,5 +1,5 @@
 // auto-generated
-import { exampleRouterName } from "@jzdy/exampleHar";
+import { jzdyRouter } from "@jzdy/exampleHar";
 import router from '@jzdy/router';
 
 class JZRouterImporter {
@@ -12,8 +12,8 @@ class JZRouterImporter {
 
 export function getGeneratedJZRouterImport(name: string): Promise<Record<string, Function>> {
   switch (name) {
-    case exampleRouterName.ROUTER_NAME_TEST:
-      return import('ets/pages/Index');
+    case jzdyRouter.LOGIN:
+      return import('ets/pages/LoginPage');
     case "MainPage":
       return import('@jzdy/exampleHar/src/main/ets/components/MainPage');
     default:

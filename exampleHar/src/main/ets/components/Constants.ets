@@ -1,6 +1,6 @@
 
-export namespace exampleRouterName {
-  export const ROUTER_NAME_TEST = "my_router_name";
+export namespace jzdyRouter {
+  export const LOGIN = "JZDY_LOGIN_PAGE";
 
 }
 
