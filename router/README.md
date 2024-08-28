@@ -1,5 +1,7 @@
 # JZRouter 鸿蒙动态路由插件
 
+插件版本：[![npm version](https://badge.fury.io/js/hvigor-jz-router-plugin.svg)](https://badge.fury.io/js/hvigor-jz-router-plugin)
+
 ### 安装
 1. 在项目根目录找到```hvigor```子目录，在`hvigor-config.json5`文件```dependencies```节点添加以下配置：
 
