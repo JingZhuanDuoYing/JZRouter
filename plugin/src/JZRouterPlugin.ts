@@ -12,7 +12,7 @@ const ROUTER_ANNOTATION_NAME = 'Entry';
 const ROUTER_MAP_PATH = "src/main/resources/rawfile";
 const ROUTER_BUILDER_PATH = "src/main/ets/generated";
 const ROUTER_BUILDER_TEMPLATE = "methodBuilder.tpl";
-const ROUTER_IMPORTER_NAME = "JZRouterImporter.ets";
+const ROUTER_IMPORTER_NAME = "JZRouterImportDelegate.ets";
 
 export function JZRouterPlugin(options: JZRouterCompileOptions = new JZRouterCompileOptions()): HvigorPlugin {
     options.annotation = ROUTER_ANNOTATION_NAME;

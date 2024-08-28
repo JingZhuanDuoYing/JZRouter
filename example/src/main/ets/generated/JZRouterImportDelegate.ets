@@ -2,9 +2,9 @@
 import { jzdyRouter } from "@jzdy/exampleHar";
 import router from '@jzdy/router';
 
-class JZRouterImporter {
+class JZRouterImportDelegate {
   static init(): void {
-    import("ets/generated/JZRouterImporter").then((m: Record<string, Function>) => {
+    import("ets/generated/JZRouterImportDelegate").then((m: Record<string, Function>) => {
       router.init(m)
     })
   }
@@ -21,4 +21,4 @@ export function getGeneratedJZRouterImport(name: string): Promise<Record<string,
   }
 }
 
-export default JZRouterImporter
+export default JZRouterImportDelegate
