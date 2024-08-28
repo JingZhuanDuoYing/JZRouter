@@ -7,7 +7,7 @@
 
     ``` json
     "dependencies": {
-        "hvigor-jz-router-plugin": "1.1.2"
+        "hvigor-jz-router-plugin": "1.1.3"
     }
     ```
 
@@ -16,7 +16,7 @@
     ``` bash
     ohpm install @jzdy/router
     ```
-    安装成功后，可在`oh-package.json5`的`dependencies`节中看到`@jzdy/router`包，此时表示安装成功。
+   安装成功后，可在`oh-package.json5`的`dependencies`节中看到`@jzdy/router`包，此时表示安装成功。
 
 3. 在hap模块的```hvigorfile.ts```中配置插件并指定需要生成路由的子模块
 
@@ -35,13 +35,12 @@
     ```
 
 ### 初始化
-插件同步后在生成```ets/generated/JZRouterImporter.ets```文件，调用其中的初始化方法
+插件同步后在生成```ets/generated/JZRouterImportDelegate.ets```文件，调用其中的初始化方法
 ```typescript
-JZRouterImporter.init()
+JZRouterImportDelegate.init()
 ```
 
 ### 开始使用
 
 您只需要将```import router from '@ohos/router'```替换为```import router from '@jzdy/router'```即可。
-
 
