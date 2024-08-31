@@ -12,7 +12,7 @@ class JZRouterImportDelegate {
   }
 }
 
-export function getGeneratedJZRouterImport(name: string): Promise<Record<string, Function>> {
+export function getGeneratedJZRouterImport(name: string): Promise<Record<string, ESObject>> {
   switch (name) {
     {{#each viewList}}
     {{#if isNameExpression}}

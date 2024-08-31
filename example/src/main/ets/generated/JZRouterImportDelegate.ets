@@ -10,7 +10,7 @@ class JZRouterImportDelegate {
   }
 }
 
-export function getGeneratedJZRouterImport(name: string): Promise<Record<string, Function>> {
+export function getGeneratedJZRouterImport(name: string): Promise<Record<string, ESObject>> {
   switch (name) {
     case jzdyRouter.LOGIN:
       return import('ets/pages/LoginPage');
