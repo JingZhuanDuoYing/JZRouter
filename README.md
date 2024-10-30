@@ -1,3 +1,6 @@
+# Deprecated
+官方新方案：https://gitee.com/hadss/hmrouter
+
 # JZRouter 鸿蒙动态路由插件
 
 插件版本：[![npm version](https://badge.fury.io/js/hvigor-jz-router-plugin.svg)](https://badge.fury.io/js/hvigor-jz-router-plugin)
